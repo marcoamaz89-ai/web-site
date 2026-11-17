@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<link rel="stylesheet" href="engine.css">
+<style>
+  .site { font-family: Work; color: var(--ink); background: #FBF8F3; }
+  .nav { height: 150px; padding: 84px 34px 0; display: flex; justify-content: space-between; align-items: center; background: #FBF8F3; }
+  .nav b { font-family: Lora; font-size: 32px; }
+  .burger { width: 36px; height: 24px; border-top: 4px solid #222; border-bottom: 4px solid #222; position: relative; }
+  .burger:after { content: ""; position: absolute; left: 0; right: 0; top: 6px; border-top: 4px solid #222; }
+  .hero { height: 600px; padding: 60px 34px; color: #fff; position: relative; overflow: hidden;
+    background: radial-gradient(circle at 75% 20%, rgba(255,190,110,.55), transparent 45%), linear-gradient(170deg, #4a2c18 0%, #24150c 70%); }
+  .hero svg { position: absolute; right: -10px; bottom: 0; opacity: .35; }
+  .hero .k { font-size: 18px; letter-spacing: 3px; font-weight: 700; color: #F2C48D; }
+  .hero h1 { font-family: Lora; font-size: 50px; line-height: 1.1; margin: 18px 0 18px; }
+  .hero p { font-size: 22px; opacity: .85; line-height: 1.4; max-width: 420px; }
+  .btn { display: inline-block; font-weight: 700; font-size: 22px; border-radius: 16px; padding: 18px 26px; margin-top: 28px; }
+  .wa { background: var(--wa); color: #0b3d1f; }
+  .ghost { border: 2px solid rgba(255,255,255,.7); color: #fff; margin-left: 10px; }
+  .sec { padding: 50px 34px; border-bottom: 1px solid #ece4d8; }
+  .sec h2 { font-family: Lora; font-size: 40px; margin-bottom: 26px; }
+  .row { display: flex; justify-content: space-between; font-size: 24px; padding: 14px 0; border-bottom: 1px dashed #e2d8ca; }
+  .row .c { color: #a08f7c; }
+  .open { display: inline-block; background: #e3f6e9; color: #17803d; font-weight: 700; font-size: 20px; padding: 8px 16px; border-radius: 30px; margin-bottom: 18px; }
+  .dish { display: flex; justify-content: space-between; align-items: baseline; padding: 16px 0; border-bottom: 1px solid #efe7db; }
+  .dish b { font-family: Lora; font-size: 27px; }
+  .dish small { display: block; font-size: 18px; color: #8a7f72; margin-top: 4px; }
+  .dish span { font-weight: 700; font-size: 24px; color: var(--rust); }
+  .map { height: 330px; border-radius: 22px; position: relative; overflow: hidden; background: #e9e4da; }
+  .map i { position: absolute; background: #fff; }
+  .pin { position: absolute; left: 255px; top: 110px; width: 50px; height: 50px; background: var(--rust); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); }
+  .pin:after { content: ""; position: absolute; left: 16px; top: 16px; width: 18px; height: 18px; background: #fff; border-radius: 50%; }
+  .maps { background: var(--navy); color: #fff; }
+  .statusbar { position: absolute; top: 0; left: 0; right: 0; height: 84px; background: #FBF8F3; z-index: 10; }
+  .foot { background: var(--navy); color: #fff; padding: 50px 34px 400px; font-size: 22px; line-height: 1.6; }
+  .foot b { font-family: Lora; font-size: 30px; display: block; margin-bottom: 10px; }
+</style></head>
+<body>
+  <div class="layer" id="scene">
+    <div class="abs kicker" id="kicker" style="left:90px; top:190px;">Trattorie e osterie</div>
+    <div class="abs hook" id="hook" style="left:90px; top:250px; width:900px;">Il sito della tua trattoria dovrebbe fare questo.</div>
+
+    <div class="abs callout" id="c1" style="left:90px; top:230px; width:900px;"><span class="n">1</span>Prenoti su WhatsApp in un tocco.</div>
+    <div class="abs callout" id="c2" style="left:90px; top:230px; width:900px;"><span class="n">2</span>Vedi se è aperto adesso.</div>
+    <div class="abs callout" id="c3" style="left:90px; top:230px; width:900px;"><span class="n">3</span>Il menu si legge dal telefono.</div>
+    <div class="abs callout" id="c4" style="left:90px; top:230px; width:900px;"><span class="n">4</span>Ti porta alla porta con Maps.</div>
+
+    <div class="phone" id="phone" style="left:240px; top:640px;">
+      <div class="screen">
+        <div class="notch"></div><div class="statusbar"></div>
+        <div class="site" id="site">
+          <div class="nav"><b>La Tua Osteria</b><div class="burger"></div></div>
+          <div class="hero">
+            <svg width="300" height="420" viewBox="0 0 300 420"><path d="M20 420V170a130 130 0 0 1 260 0v250" fill="none" stroke="#F2C48D" stroke-width="10"/><path d="M70 420V200a80 80 0 0 1 160 0v220" fill="none" stroke="#F2C48D" stroke-width="6"/></svg>
+            <div class="k">CENTRO STORICO · GENOVA</div>
+            <h1>Cucina genovese<br>tra i vicoli.</h1>
+            <p>Trofie al pesto, pansoti e focaccia come a casa.</p>
+            <div class="btn wa" id="waBtn">Prenota su WhatsApp</div><div class="btn ghost">Menu</div>
+          </div>
+          <div class="sec" id="hours">
+            <h2>Orari</h2>
+            <div class="open">● Aperto ora · chiude alle 23:00</div>
+            <div class="row"><span>Lunedì</span><span class="c">Chiuso</span></div>
+            <div class="row"><span>Mar – Ven</span><span>12–15 · 19–23</span></div>
+            <div class="row"><span>Sab – Dom</span><span>12–15:30 · 19–23:30</span></div>
+          </div>
+          <div class="sec" id="menu">
+            <h2>Menu</h2>
+            <div class="dish"><div><b>Trofie al pesto</b><small>basilico, pinoli, Parmigiano</small></div><span>12 €</span></div>
+            <div class="dish"><div><b>Pansoti in salsa di noci</b><small>ripieni di erbette</small></div><span>13 €</span></div>
+            <div class="dish"><div><b>Cima alla genovese</b><small>servita fredda</small></div><span>16 €</span></div>
+            <div class="dish"><div><b>Focaccia al formaggio</b><small>da dividere</small></div><span>9 €</span></div>
+            <div class="dish"><div><b>Torta di riso</b><small>della casa</small></div><span>5 €</span></div>
+          </div>
+          <div class="sec" id="where" style="border:0">
+            <h2>Dove siamo</h2>
+            <div class="map">
+              <i style="left:0;right:0;top:80px;height:22px"></i><i style="left:0;right:0;top:220px;height:16px"></i>
+              <i style="top:0;bottom:0;left:140px;width:20px"></i><i style="top:0;bottom:0;left:390px;width:14px;transform:skewX(-12deg)"></i>
+              <div class="pin"></div>
+            </div>
+            <div class="btn maps" id="mapsBtn">Apri in Google Maps</div>
+          </div>
+          <div class="foot"><b>La Tua Osteria</b>Vico dell'Esempio 1, Genova<br>Tel. 010 000 0000</div>
+        </div>
+      </div>
+    </div>
+    <div class="tap" id="tap1"></div>
+    <div class="tap" id="tap2"></div>
+  </div>
+
+  <div class="layer endcard" id="end" style="padding:300px 90px 0;">
+    <div class="small" style="margin-bottom:40px;">Trattorie e osterie di Genova</div>
+    <div class="big">Vuoi un sito così?</div>
+    <div class="big" style="margin-top:40px;">Scrivimi<br><span class="pill" style="font-size:96px;">BOZZA</span> in DM</div>
+    <div class="small" style="margin-top:60px;">Te lo preparo gratis.<br>Se ti piace ne parliamo, se no nessun problema.</div>
+    <div class="small abs" style="left:90px; bottom:330px; font-size:30px;">Marco · Web Designer Genova</div>
+  </div>
+
+<script src="engine.js"></script>
+<script>
+  const site = $('#site');
+  const top_ = id => $(id).offsetTop;
+  function centerOf(el) { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
+
+  window.render = t => {
+    show('#kicker', t, 0.0, 1.9, { dy: 20 });
+    words('#hook', t, 0.1, 0.08);
+    $('#hook').style.opacity = 1 - prog(t, 1.9, 0.3);
+
+    // phone rises in
+    const pp = prog(t, 0.6, 0.8);
+    $('#phone').style.transform = `translateY(${(1 - pp) * 900}px)`;
+
+    show('#c1', t, 2.1, 3.7); show('#c2', t, 3.9, 5.4); show('#c3', t, 5.6, 7.1); show('#c4', t, 7.3, 8.6);
+
+    // scroll the fake site to each feature
+    const stops = [[0, 0], [3.8, top_('#hours') - 150], [5.5, top_('#menu') - 150], [7.2, top_('#where') - 150]];
+    let y = 0;
+    for (let i = 0; i < stops.length; i++) {
+      const [at, target] = stops[i];
+      const prev = i ? stops[i - 1][1] : 0;
+      if (t >= at) y = lerp(prev, target, prog(t, at, 0.7, easeInOut));
+    }
+    site.style.transform = `translateY(${-y}px)`;
+
+    const [wx, wy] = centerOf($('#waBtn')); tap('#tap1', t, 3.0, wx, wy);
+    const [mx, my] = centerOf($('#mapsBtn')); tap('#tap2', t, 8.1, mx, my);
+
+    // end card slides up
+    const pe = prog(t, 8.7, 0.5);
+    $('#end').style.transform = `translateY(${(1 - pe) * 1920}px)`;
+    ['#end .small', '#end .big'].forEach(s => document.querySelectorAll(s).forEach((el, i) => {
+      const p = prog(t, 9.0 + i * 0.15, 0.4); el.style.opacity = p;
+    }));
+  };
+  window.render(0);
+</script>
+</body></html>

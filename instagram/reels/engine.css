@@ -1,0 +1,41 @@
+@font-face { font-family: Lora; src: url(fonts/Lora-Bold.ttf); font-weight: 700; }
+@font-face { font-family: Lora; src: url(fonts/Lora-Regular.ttf); font-weight: 400; }
+@font-face { font-family: Lora; src: url(fonts/Lora-Italic.ttf); font-style: italic; }
+@font-face { font-family: Work; src: url(fonts/WorkSans-Regular.ttf); font-weight: 400; }
+@font-face { font-family: Work; src: url(fonts/WorkSans-Bold.ttf); font-weight: 700; }
+
+:root {
+  --cream: #F4EEE4;
+  --rust: #C4562B;
+  --navy: #1F3A4D;
+  --ink: #1D1B19;
+  --muted: #6E665C;
+  --gold: #E9A23B;
+  --wa: #25D366;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--cream); }
+body { font-family: Work, sans-serif; color: var(--ink); position: relative; }
+.abs { position: absolute; }
+.serif { font-family: Lora, serif; }
+.layer { position: absolute; inset: 0; }
+
+/* safe zone: Instagram UI covers ~250px bottom, ~180px top, ~140px right */
+.kicker { font-family: Work; font-weight: 700; letter-spacing: 4px; font-size: 30px; color: var(--rust); text-transform: uppercase; }
+.hook { font-family: Lora; font-weight: 700; font-size: 96px; line-height: 1.08; color: var(--ink); }
+.callout { font-family: Lora; font-weight: 700; font-size: 76px; line-height: 1.12; color: var(--ink); }
+.callout .n { display: inline-flex; width: 74px; height: 74px; border-radius: 50%; background: var(--navy); color: #fff; font-family: Work; font-size: 40px; align-items: center; justify-content: center; margin-right: 22px; vertical-align: 8px; }
+.signature { font-family: Work; font-size: 28px; color: var(--muted); }
+
+/* phone mockup */
+.phone { position: absolute; width: 600px; height: 1220px; background: #111; border-radius: 86px; padding: 20px; box-shadow: 0 50px 90px rgba(40,25,10,.28); }
+.screen { width: 100%; height: 100%; border-radius: 68px; overflow: hidden; position: relative; background: #fff; }
+.notch { position: absolute; top: 22px; left: 50%; width: 170px; height: 46px; background: #111; border-radius: 30px; transform: translateX(-50%); z-index: 20; }
+.site { position: absolute; left: 0; top: 0; width: 100%; }
+
+.tap { position: absolute; width: 110px; height: 110px; border-radius: 50%; background: rgba(255,255,255,.55); border: 6px solid rgba(29,27,25,.55); z-index: 30; pointer-events: none; }
+
+.endcard { background: var(--rust); color: #fff; }
+.endcard .big { font-family: Lora; font-weight: 700; font-size: 104px; line-height: 1.06; }
+.endcard .pill { display: inline-block; background: #fff; color: var(--rust); font-family: Work; font-weight: 700; border-radius: 20px; padding: 6px 26px; }
+.endcard .small { font-family: Work; font-size: 40px; opacity: .92; line-height: 1.35; }

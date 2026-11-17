@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<link rel="stylesheet" href="engine.css">
+<style>
+  .scr { position: absolute; inset: 0; background: #fff; }
+  .statusbar { position: absolute; top: 0; left: 0; right: 0; height: 84px; z-index: 10; }
+  /* search screen */
+  #search { padding: 110px 30px 0; background: #fff; }
+  .bar { border: 2px solid #e2e2e2; border-radius: 40px; height: 76px; display: flex; align-items: center; padding: 0 26px; font-size: 26px; color: #222; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+  .bar svg { margin-right: 16px; flex: none; }
+  .caret { display: inline-block; width: 3px; height: 30px; background: #3367d6; margin-left: 2px; vertical-align: -5px; }
+  .res { border: 1px solid #ececec; border-radius: 24px; padding: 26px; margin-top: 26px; }
+  .res .t { font-family: Lora; font-weight: 700; font-size: 30px; color: #1a3d8f; }
+  .res .s { font-size: 20px; color: #7a7a7a; margin-top: 6px; }
+  .stars { color: #e7a521; font-size: 22px; margin-top: 8px; }
+  .res .u { font-size: 19px; color: #188038; margin-top: 8px; }
+  /* old slow site */
+  #old { background: #dcdcdc; }
+  .oldpage { position: absolute; left: 30px; top: 120px; width: 500px; transform-origin: top left; opacity: .5; }
+  .oldpage div { background: #bdbdbd; margin-bottom: 12px; height: 18px; }
+  .spin { position: absolute; left: 50%; top: 46%; width: 110px; height: 110px; margin: -55px; border: 12px solid #c9c9c9; border-top-color: #777; border-radius: 50%; }
+  .loading { position: absolute; left: 0; right: 0; top: 58%; text-align: center; font-size: 26px; color: #666; }
+  /* good site */
+  #good { background: #FBF8F3; }
+  .nav { height: 150px; padding: 84px 34px 0; display: flex; justify-content: space-between; align-items: center; }
+  .nav b { font-family: Lora; font-size: 32px; }
+  .hero { height: 640px; padding: 60px 34px; color: #fff; background: radial-gradient(circle at 75% 20%, rgba(255,190,110,.55), transparent 45%), linear-gradient(170deg, #4a2c18 0%, #24150c 70%); }
+  .hero .k { font-size: 18px; letter-spacing: 3px; font-weight: 700; color: #F2C48D; }
+  .hero h1 { font-family: Lora; font-size: 50px; line-height: 1.1; margin: 18px 0; }
+  .open { display: inline-block; background: rgba(227,246,233,.95); color: #17803d; font-weight: 700; font-size: 20px; padding: 8px 16px; border-radius: 30px; }
+  .btn { display: inline-block; font-weight: 700; font-size: 22px; border-radius: 16px; padding: 18px 26px; margin-top: 28px; }
+  .wa { background: var(--wa); color: #0b3d1f; }
+  /* chat */
+  #chat { background: #efe7de; }
+  .chead { height: 170px; background: #075e54; color: #fff; padding: 100px 30px 0; font-size: 26px; font-weight: 700; }
+  .bub { position: absolute; right: 26px; max-width: 420px; background: #d9fdd3; border-radius: 22px 22px 6px 22px; padding: 20px 24px; font-size: 25px; line-height: 1.35; box-shadow: 0 2px 4px rgba(0,0,0,.08); }
+  .bub.in { left: 26px; right: auto; background: #fff; border-radius: 22px 22px 22px 6px; }
+  .counter { font-family: Lora; font-weight: 700; font-size: 150px; color: var(--rust); }
+</style></head>
+<body>
+  <div class="layer">
+    <div class="abs kicker" id="kicker" style="left:90px; top:190px;">POV</div>
+    <div class="abs hook" id="hook" style="left:90px; top:250px; width:900px;">Sono le 20:30. Cerchi dove cenare a Genova.</div>
+    <div class="abs callout" id="c1" style="left:90px; top:250px; width:900px;">Due trattorie. Due siti.</div>
+    <div class="abs callout" id="c2" style="left:90px; top:250px; width:900px;">Apri la prima…</div>
+    <div class="abs" id="c3" style="left:90px; top:200px; width:900px;"><span class="counter" id="count">1 s</span><div class="callout" style="font-size:60px">e ancora non carica.</div></div>
+    <div class="abs callout" id="c4" style="left:90px; top:250px; width:900px;">Torni indietro. Apri la seconda.</div>
+    <div class="abs callout" id="c5" style="left:90px; top:250px; width:900px;">Si apre subito. Prenoti in un tocco.</div>
+    <div class="abs callout" id="c6" style="left:90px; top:250px; width:900px;">Il tavolo l'ha preso <span style="color:var(--rust)">lei</span>.</div>
+
+    <div class="phone" id="phone" style="left:240px; top:640px;">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="scr" id="search">
+          <div class="bar"><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" fill="none" stroke="#666" stroke-width="2.5"/><path d="M15 15l6 6" stroke="#666" stroke-width="2.5"/></svg><span id="q"></span><span class="caret" id="caret"></span></div>
+          <div id="results">
+            <div class="res" id="r1"><div class="t">Trattoria ● ● ● ●</div><div class="stars">★★★★☆ <span style="color:#777">· aperto</span></div><div class="s">Cucina ligure · Centro storico</div><div class="u">Sito web</div></div>
+            <div class="res" id="r2"><div class="t">La Tua Osteria</div><div class="stars">★★★★☆ <span style="color:#777">· aperto</span></div><div class="s">Cucina genovese · Centro storico</div><div class="u">Sito web</div></div>
+          </div>
+        </div>
+        <div class="scr" id="old">
+          <div class="oldpage"><div style="width:60%;height:40px"></div><div></div><div style="width:80%"></div><div style="height:160px"></div><div></div><div style="width:70%"></div></div>
+          <div class="spin" id="spin"></div>
+          <div class="loading">Caricamento…</div>
+        </div>
+        <div class="scr" id="good">
+          <div class="nav"><b>La Tua Osteria</b></div>
+          <div class="hero">
+            <div class="k">CENTRO STORICO · GENOVA</div>
+            <h1>Cucina genovese<br>tra i vicoli.</h1>
+            <div class="open">● Aperto ora · chiude alle 23:00</div><br>
+            <div class="btn wa" id="waBtn">Prenota su WhatsApp</div>
+          </div>
+        </div>
+        <div class="scr" id="chat">
+          <div class="chead">La Tua Osteria</div>
+          <div class="bub" id="b1" style="top:230px;">Buonasera! Avete un tavolo per 2 alle 21?</div>
+          <div class="bub in" id="b2" style="top:370px;">Certo, vi aspettiamo alle 21 👍</div>
+        </div>
+        <div class="statusbar"></div>
+      </div>
+    </div>
+    <div class="tap" id="tap1"></div><div class="tap" id="tap2"></div><div class="tap" id="tap3"></div>
+  </div>
+
+  <div class="layer endcard" id="end" style="padding:300px 90px 0;">
+    <div class="big">Il tuo sito è la prima o la seconda?</div>
+    <div class="big" style="margin-top:60px;">Scrivimi<br><span class="pill" style="font-size:96px;">BOZZA</span> in DM</div>
+    <div class="small" style="margin-top:60px;">Ti preparo gratis una bozza del tuo sito.</div>
+    <div class="small abs" style="left:90px; bottom:330px; font-size:30px;">Marco · Web Designer Genova</div>
+  </div>
+
+<script src="engine.js"></script>
+<script>
+  const Q = 'trattoria genova centro';
+  const c = el => { const r = $(el).getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+  const scr = (id, on) => { $(id).style.opacity = on ? 1 : 0; };
+
+  window.render = t => {
+    show('#kicker', t, 0, 2.2, { dy: 20 });
+    words('#hook', t, 0.1, 0.09);
+    $('#hook').style.opacity = 1 - prog(t, 2.2, 0.3);
+    const pp = prog(t, 0.5, 0.8);
+    $('#phone').style.transform = `translateY(${(1 - pp) * 900}px)`;
+
+    // typing
+    const n = Math.floor(clamp((t - 1.1) / 1.0) * Q.length);
+    $('#q').textContent = Q.slice(0, n);
+    $('#caret').style.opacity = (Math.floor(t * 2.5) % 2 && t < 2.3) ? 1 : 0;
+    const rp = prog(t, 2.3, 0.4);
+    $('#results').style.opacity = rp; $('#results').style.transform = `translateY(${(1 - rp) * 40}px)`;
+
+    show('#c1', t, 2.5, 3.4); show('#c2', t, 3.6, 4.1, { dy: 30 });
+    show('#c3', t, 4.2, 6.5, { dy: 30 });
+    $('#count').textContent = Math.min(5, 1 + Math.floor(clamp(t - 4.2, 0, 9) / 0.5)) + ' s';
+    show('#c4', t, 6.7, 7.9); show('#c5', t, 8.1, 9.2); show('#c6', t, 9.4, 10.4);
+
+    // screens
+    const scene = t < 4.0 ? 'search' : t < 6.6 ? 'old' : t < 7.5 ? 'search' : t < 8.85 ? 'good' : 'chat';
+    ['search', 'old', 'good', 'chat'].forEach(s => scr('#' + s, s === scene));
+    $('#spin').style.transform = `rotate(${t * 400}deg)`;
+
+    let [x, y] = c('#r1'); tap('#tap1', t, 3.75, x, y);
+    [x, y] = c('#r2'); tap('#tap2', t, 7.2, x, y);
+    [x, y] = c('#waBtn'); tap('#tap3', t, 8.6, x, y);
+    show('#b1', t, 9.0, null, { dy: 20 }); show('#b2', t, 9.8, null, { dy: 20 });
+
+    const pe = prog(t, 10.6, 0.5);
+    $('#end').style.transform = `translateY(${(1 - pe) * 1920}px)`;
+  };
+  window.render(0);
+</script>
+</body></html>

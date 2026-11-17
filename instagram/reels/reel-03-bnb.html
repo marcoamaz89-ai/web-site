@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<link rel="stylesheet" href="engine.css">
+<style>
+  body { background: #EAF1F4; }
+  .card { position: absolute; left: 90px; width: 900px; background: #fff; border-radius: 40px; padding: 40px 60px; box-shadow: 0 30px 60px rgba(31,58,77,.14); }
+  .card .lab { font-family: Work; font-weight: 700; font-size: 30px; letter-spacing: 3px; text-transform: uppercase; }
+  .card .line { display: flex; justify-content: space-between; font-size: 42px; margin-top: 22px; }
+  .card .minus { color: #b33a2e; }
+  .card .tot { display: flex; justify-content: space-between; align-items: baseline; border-top: 3px solid #e3e9ec; margin-top: 22px; padding-top: 14px; }
+  .card .tot span { font-size: 40px; }
+  .card .tot b { font-family: Lora; font-size: 100px; }
+  .note { font-size: 26px; color: var(--muted); }
+  .kicker { color: var(--navy); }
+</style></head>
+<body>
+  <div class="layer">
+    <div class="abs kicker" id="kicker" style="left:90px; top:190px;">B&amp;B e affittacamere</div>
+    <div class="abs hook" id="hook" style="left:90px; top:250px; width:900px;">Una notte da 100 €. Quanto ti resta davvero?</div>
+
+    <div class="card" id="cardA" style="top:620px;">
+      <div class="lab" style="color:#b33a2e;">Prenotazione dal portale</div>
+      <div class="line"><span>Prezzo della notte</span><span>100 €</span></div>
+      <div class="line minus" id="lineA"><span>Commissione (15%)</span><span>– 15 €</span></div>
+      <div class="tot"><span>Ti resta</span><b id="totA">100 €</b></div>
+    </div>
+    <div class="card" id="cardB" style="top:1120px;">
+      <div class="lab" style="color:#17803d;">Prenotazione dal tuo sito</div>
+      <div class="line"><span>Prezzo della notte</span><span>100 €</span></div>
+      <div class="line" id="lineB" style="color:#17803d;"><span>Commissione</span><span>0 €</span></div>
+      <div class="tot"><span>Ti resta</span><b id="totB" style="color:#17803d;">100 €</b></div>
+    </div>
+    <div class="abs note" id="note" style="left:90px; top:1610px; width:900px;">Esempio con commissione indicativa del 15%. Controlla quella del tuo contratto.</div>
+
+    <div class="abs callout" id="c1" style="left:90px; top:300px; width:900px;">10 notti dirette al mese =<br><span style="color:var(--rust); font-size:150px;">+150 €</span><br>ogni mese.</div>
+    <div class="abs callout" id="c2" style="left:90px; top:300px; width:900px;">Il portale ti porta clienti nuovi.<br><br><span style="color:var(--navy)">Il tuo sito ti tiene quelli che tornano.</span></div>
+  </div>
+
+  <div class="layer endcard" id="end" style="padding:300px 90px 0; background: var(--navy);">
+    <div class="small" style="margin-bottom:40px;">Foto, camere, dintorni e richiesta su WhatsApp.</div>
+    <div class="big">Un sito per il tuo B&amp;B.</div>
+    <div class="big" style="margin-top:60px;">Scrivimi<br><span class="pill" style="font-size:96px; color:var(--navy);">BOZZA</span> in DM</div>
+    <div class="small" style="margin-top:60px;">Te la preparo gratis, senza impegno.</div>
+    <div class="small abs" style="left:90px; bottom:330px; font-size:30px;">Marco · Web Designer Genova</div>
+  </div>
+
+<script src="engine.js"></script>
+<script>
+  window.render = t => {
+    show('#kicker', t, 0, 6.6, { dy: 20 });
+    words('#hook', t, 0.1, 0.09);
+    $('#hook').style.opacity = 1 - prog(t, 6.6, 0.3);
+
+    show('#cardA', t, 1.4, 6.6, { dy: 120 });
+    show('#lineA', t, 2.4, null, { dx: -60, dy: 0 });
+    $('#totA').textContent = Math.round(100 - 15 * prog(t, 2.9, 0.8)) + ' €';
+    show('#cardB', t, 4.0, 6.6, { dy: 120 });
+    show('#lineB', t, 4.8, null, { dx: -60, dy: 0 });
+    show('#note', t, 3.4, 6.6, { dy: 10 });
+
+    show('#c1', t, 6.9, 8.9, { scale: true }); show('#c2', t, 9.1, 11.0);
+
+    const pe = prog(t, 11.2, 0.5);
+    $('#end').style.transform = `translateY(${(1 - pe) * 1920}px)`;
+  };
+  window.render(0);
+</script>
+</body></html>
